@@ -4,24 +4,24 @@ import parser
 import test_parser
 
 
-proc isSubgameValid(subgame: Subset): bool=
-  if subgame.red > 12: return false
-  if subgame.green > 13: return false
-  if subgame.blue > 14: return false
+const minSubgame = Subset(red: 12, green: 13, blue: 14)
+
+
+func isSubgameValid(subgame: Subset): bool =
+  if subgame.red > minSubgame.red: return false
+  if subgame.green > minSubgame.green: return false
+  if subgame.blue > minSubgame.blue: return false
   return true
 
 
-proc isGameValid(game: Game): bool =
+func isGameValid(game: Game): bool =
   ## check if game is valid
   ## each subgame needs to be valid
-  for subgame in game.subgames:
-    if not isSubgameValid(subgame): return false
-  return true
+  return game.subgames.all(isSubgameValid)
 
 
-proc part1(games: seq[Game]): int =
-  let validGames = filter(games, isGameValid)
-  return validGames.mapIt(it.id).sum()
+func part1(games: openArray[Game]): int =
+  return filter(games, isGameValid).mapIt(it.id).sum()
 
 
 proc test() =

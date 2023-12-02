@@ -11,7 +11,7 @@ type
     subgames*: seq[Subset]
 
 
-proc parseInput*(input: string): seq[Game] =
+func parseInput*(input: string): seq[Game] =
   for line in input.splitLines():
     if line.len == 0: continue
     var game = Game()

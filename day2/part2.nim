@@ -1,23 +1,20 @@
 import sequtils
 import parser
 import test_parser
+import math
 
 
-proc minNeccessary(game: Game): int =
-  var maxValues = Subset()
-  for subgame in game.subgames:
-    if subgame.red > maxValues.red:
-      maxValues.red = subgame.red
-    if subgame.green > maxValues.green:
-      maxValues.green = subgame.green
-    if subgame.blue > maxValues.blue:
-      maxValues.blue = subgame.blue
+func minNeccessary(game: Game): int =
+  let maxValues = Subset(
+    red: game.subgames.mapIt(it.red).max(),
+    blue: game.subgames.mapIt(it.blue).max(),
+    green: game.subgames.mapIt(it.green).max()
+  )
   return @[maxValues.red, maxValues.green, maxValues.blue].foldl(a*b)
 
 
-proc part2(games: seq[Game]): int =
-  for game in games:
-    result += minNeccessary(game)
+func part2(games: openArray[Game]): int =
+  return games.map(minNeccessary).sum()
 
 
 proc test() =
