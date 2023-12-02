@@ -2,33 +2,33 @@ import strutils
 import sequtils
 import math
 
-var example_input = """1abc2
+const exampleInput = """1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet
 """
 
 
-proc toNumbers(input: string): seq[int] =
+func toNumbers(input: string): seq[int] =
   for line in input.splitLines():
-    var digits = filter(line, isDigit)
+    let digits = filter(line, isDigit)
     if digits.len == 0: continue
     result.add parseInt(digits[0] & digits[^1])
 
 
-proc test() =
-  var numbers = toNumbers(example_input)
+func test() =
+  let numbers = toNumbers(exampleInput)
   assert numbers == @[12, 38, 15, 77]
-  var summed = sum(numbers)
+  let summed = sum(numbers)
   assert summed == 142
 
 
 proc main() =
   echo "Task1"
   test()
-  var input = readFile("input.txt")
-  var numbers = toNumbers(input)
-  var summed = sum(numbers)
+  let input = readFile("input.txt")
+  let numbers = toNumbers(input)
+  let summed = sum(numbers)
   echo summed
 
 

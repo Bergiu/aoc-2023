@@ -1,11 +1,9 @@
-import sets
 import strutils
-import algorithm
 import tables
 import math
 
 
-var exampleInput = """two1nine
+const exampleInput = """two1nine
 eightwothree
 abcone2threexyz
 xtwone3four
@@ -22,48 +20,48 @@ const digitsTable = {
 }.toTable
 
 
-proc firstDigit(line: string): string =
+func firstDigit(line: string): string =
   for i in 0..<line.len:
     # substring from first: hallo -> hallo, allo, llo, lo, o
-    var substring = line[i..<line.len]
+    let substring = line[i..<line.len]
     for digit in digitsTable.keys:
       if substring.startsWith(digit):
         return digit
   raise newException(Exception, "No digit found in " & line)
 
 
-proc lastDigit(line: string): string =
+func lastDigit(line: string): string =
   for i in 0..<line.len:
     # substring from last: hallo -> hallo, hall, hal, ha, h
-    var substring = line[0..<line.len-i]
+    let substring = line[0..<line.len-i]
     for digit in digitsTable.keys:
       if substring.endsWith(digit):
         return digit
   raise newException(Exception, "No digit found in " & line)
 
 
-proc toNumbers(input: string): seq[int] =
+func toNumbers(input: string): seq[int] =
   for line in input.splitLines():
     if line.len > 0:
-      var first = firstDigit(line)
-      var last = lastDigit(line)
-      var sum = digitsTable[first]*10 + digitsTable[last]
+      let first = firstDigit(line)
+      let last = lastDigit(line)
+      let sum = digitsTable[first]*10 + digitsTable[last]
       result.add(sum)
 
 
-proc test() =
-  var numbers = toNumbers(example_input)
+func test() =
+  let numbers = toNumbers(exampleInput)
   assert numbers == @[29, 83, 13, 24, 42, 14, 76]
-  var summed = sum(numbers)
+  let summed = sum(numbers)
   assert summed == 281
 
 
 proc main() =
   echo "Task2"
   test()
-  var input = readFile("input.txt")
-  var numbers = toNumbers(input)
-  var summed = sum(numbers)
+  let input = readFile("input.txt")
+  let numbers = toNumbers(input)
+  let summed = sum(numbers)
   echo summed
 
 
