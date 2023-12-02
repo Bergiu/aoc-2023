@@ -17,7 +17,7 @@ func part2(games: openArray[Game]): int =
   return games.map(minNeccessary).sum()
 
 
-proc test() =
+func test() =
   let games = parseInput(exampleInput)
   let res = part2(games)
   assert res == 2286

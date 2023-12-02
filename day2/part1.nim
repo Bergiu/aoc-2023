@@ -24,7 +24,7 @@ func part1(games: openArray[Game]): int =
   return filter(games, isGameValid).mapIt(it.id).sum()
 
 
-proc test() =
+func test() =
   let games = parseInput(exampleInput)
   let res = part1(games)
   assert res == 1+2+5
