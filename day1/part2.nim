@@ -57,7 +57,6 @@ func test() =
 
 
 proc main() =
-  echo "Task2"
   test()
   let input = readFile("input.txt")
   let numbers = toNumbers(input)
