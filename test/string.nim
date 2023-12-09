@@ -1,5 +1,5 @@
-import common
 import sequtils
+import ../lib/common_string
 
 
 proc testSplitInv() =
@@ -20,73 +20,6 @@ proc testSplitInvIndex() =
   assert toSeq(splitInvIndex("1 2 3 4.567 890", {'0'..'9'})) == @[(start: 0, stop: 1), (start: 2, stop: 3), (start: 4, stop: 5), (start: 6, stop: 7), (start: 8, stop: 11), (start: 12, stop: 15)]
 
 
-proc testAddMod() =
-  assert addMod(0, 0, 3) == 0
-  assert addMod(1, 0, 3) == 1
-  assert addMod(2, 0, 3) == 2
-  assert addMod(3, 0, 3) == 0
-  assert addMod(0, 1, 3) == 1
-  assert addMod(1, 1, 3) == 2
-  assert addMod(2, 1, 3) == 0
-  assert addMod(3, 1, 3) == 1
-  assert addMod(1, 2, 3) == 0
-  assert addMod(2, 2, 3) == 1
-  assert addMod(3, 2, 3) == 2
-  assert addMod(4, 2, 3) == 0
-  assert addMod(5, 2, 3) == 1
-  assert addMod(6, 2, 3) == 2
-  assert addMod(7, 2, 3) == 0
-  assert addMod(0, 0, 5) == 0
-  assert addMod(1, 0, 5) == 1
-  assert addMod(2, 0, 5) == 2
-  assert addMod(3, 0, 5) == 3
-  assert addMod(4, 0, 5) == 4
-  assert addMod(5, 0, 5) == 0
-  assert addMod(6, 0, 5) == 1
-  assert addMod(7, 0, 5) == 2
-  assert addMod(8, 0, 5) == 3
-  assert addMod(9, 0, 5) == 4
-  assert addMod(10, 0, 5) == 0
-  assert addMod(0, 1, 5) == 1
-  assert addMod(1, 1, 5) == 2
-  assert addMod(2, 1, 5) == 3
-  assert addMod(3, 1, 5) == 4
-  assert addMod(4, 1, 5) == 0
-  assert addMod(5, 1, 5) == 1
-
-
-proc testSubMod() =
-  assert subMod(0, 0, 3) == 0
-  assert subMod(1, 0, 3) == 1
-  assert subMod(2, 0, 3) == 2
-  assert subMod(3, 0, 3) == 0
-  assert subMod(0, 1, 3) == 2
-  assert subMod(1, 1, 3) == 0
-  assert subMod(2, 1, 3) == 1
-  assert subMod(3, 1, 3) == 2
-  assert subMod(1, 2, 3) == 2
-  assert subMod(2, 2, 3) == 0
-  assert subMod(3, 2, 3) == 1
-  assert subMod(4, 2, 3) == 2
-  assert subMod(5, 2, 3) == 0
-  assert subMod(6, 2, 3) == 1
-  assert subMod(7, 2, 3) == 2
-  assert subMod(0, 0, 5) == 0
-  assert subMod(1, 0, 5) == 1
-  assert subMod(2, 0, 5) == 2
-  assert subMod(3, 0, 5) == 3
-  assert subMod(4, 0, 5) == 4
-  assert subMod(5, 0, 5) == 0
-  assert subMod(6, 0, 5) == 1
-  assert subMod(7, 0, 5) == 2
-  assert subMod(8, 0, 5) == 3
-  assert subMod(9, 0, 5) == 4
-  assert subMod(10, 0, 5) == 0
-  assert subMod(0, 1, 5) == 4
-  assert subMod(1, 1, 5) == 0
-  assert subMod(2, 1, 5) == 1
-
-
 proc testSplitLinesNoTnl() =
   assert splitLines("abc", keepTnl=false) == @["abc"]
   assert splitLines("abc\n", keepTnl=false) == @["abc"]
@@ -103,7 +36,5 @@ proc testSplitLinesNoTnl() =
 
 if isMainModule:
   testSplitInv()
-  testAddMod()
-  testSubMod()
   testSplitInvIndex()
   testSplitLinesNoTnl()

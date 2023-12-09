@@ -1,7 +1,9 @@
 import sequtils
 import strutils
 import math
-import common
+import ../lib/common_types
+import ../lib/common_string
+import ../lib/common_enumerable
 import sugar
 
 

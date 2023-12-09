@@ -2,7 +2,7 @@ import sequtils
 import strutils
 import std/setutils
 import math
-import common
+import ../lib/common_string
 import std/enumerate
 
 
