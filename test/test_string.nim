@@ -34,7 +34,46 @@ proc testSplitLinesNoTnl() =
   assert splitLines("abc\n\rdef\r", keepTnl=false) == @["abc", "", "def"]  # \n\r is two lines
 
 
+proc testSplitLen() =
+  assert splitLen("abc", 1).toSeq == @["a", "b", "c"]
+  assert splitLen("abc", 2).toSeq == @["ab", "c"]
+  assert splitLen("abc", 3).toSeq == @["abc"]
+  assert splitLen("abc", 4).toSeq == @["abc"]
+  assert splitLen("abcdef", 1).toSeq == @["a", "b", "c", "d", "e", "f"]
+  assert splitLen("abcdef", 2).toSeq == @["ab", "cd", "ef"]
+  assert splitLen("abcdef", 3).toSeq == @["abc", "def"]
+  assert splitLen("abcdef", 4).toSeq == @["abcd", "ef"]
+  assert splitLen("abcdef", 5).toSeq == @["abcde", "f"]
+  assert splitLen("abcdef", 6).toSeq == @["abcdef"]
+  assert splitLen("abcdef", 7).toSeq == @["abcdef"]
+  assert splitLen("abc", 1, true).toSeq == @["a", "b", "c"]
+  assert splitLen("abc", 2, true).toSeq == @["ab"]
+  assert splitLen("abc", 3, true).toSeq == @["abc"]
+  assert splitLen("123456789", 4, true).toSeq == @["1234", "5678"]
+  assert splitLen("abc", 1, false).toSeq == @["a", "b", "c"]
+  assert splitLen("abc", 2, false).toSeq == @["ab", "c"]
+  assert splitLen("abc", 3, false).toSeq == @["abc"]
+  assert splitLen("123456789", 4, false).toSeq == @["1234", "5678", "9"]
+
+
+proc testSplitLenIgnoreRemaining() =
+  assert splitLenIgnoreRemaining("abc", 1).toSeq == @["a", "b", "c"]
+  assert splitLenIgnoreRemaining("abc", 2).toSeq == @["ab"]
+  assert splitLenIgnoreRemaining("abc", 3).toSeq == @["abc"]
+  assert splitLenIgnoreRemaining("123456789", 4).toSeq == @["1234", "5678"]
+
+
+proc testSplitLenInclusiveRemaining() =
+  assert splitLenInclusiveRemaining("abc", 1).toSeq == @["a", "b", "c"]
+  assert splitLenInclusiveRemaining("abc", 2).toSeq == @["ab", "c"]
+  assert splitLenInclusiveRemaining("abc", 3).toSeq == @["abc"]
+  assert splitLenInclusiveRemaining("123456789", 4).toSeq == @["1234", "5678", "9"]
+
+
 if isMainModule:
   testSplitInv()
   testSplitInvIndex()
   testSplitLinesNoTnl()
+  testSplitLen()
+  testSplitLenIgnoreRemaining()
+  testSplitLenInclusiveRemaining()

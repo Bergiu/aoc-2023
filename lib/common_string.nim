@@ -46,3 +46,38 @@ iterator splitInv*(s: string, seps: set[char] = Whitespace,
   ## splits are done.
   for (start, stop) in splitInvIndex(s, seps, maxsplit):
     yield s[start..<stop]
+
+
+iterator splitLenInclusiveRemaining*(s: string, length: int): string =
+  ## Split a string into substrings of the given length, including the
+  ## remaining characters.
+  ## Example: splitLenInclusiveRemaining("123456789", 4) -> "1234", "5678", "9"
+  var i = 0;
+  while i < s.len:
+    yield s[i ..< min(i+length, s.len)]
+    i += length
+
+
+iterator splitLenIgnoreRemaining*(s: string, length: int): string =
+  ## Split a string into substrings of the given length, ignoring the
+  ## remaining characters.
+  ## Example: splitLenIgnoreRemaining("123456789", 4) -> "1234", "5678"
+  for i in 0 ..< s.len div length:
+    yield s[i*length ..< (i+1)*length]
+
+
+iterator splitLen*(s: string, length: int, ignoreRemaining=false): string =
+  ## Split a string into substrings of the given length.
+  ## If ignoreRemaining is true, the last substring may be shorter.
+  ## Example for ignoreRemaining=false:
+  ##   splitLen("123456789", 4) -> "1234", "5678", "9"
+  ## Example for ignoreRemaining=true:
+  ##   splitLen("123456789", 4) -> "1234", "5678"
+  if ignoreRemaining:
+    for s in splitLenIgnoreRemaining(s, length):
+      yield s
+  else:
+    for s in splitLenInclusiveRemaining(s, length):
+      yield s
+
+

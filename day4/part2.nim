@@ -1,8 +1,9 @@
 import sequtils
 import strutils
 import sets
-import ../lib/common_math
 import ../lib/common_string
+import ../lib/common_math
+
 
 const exampleInput = """Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
@@ -23,7 +24,7 @@ proc parseInput(inp: string): seq[Card] =
   for line in inp.splitLines(keepTnl=false):
     let tmp = line.split(":", 1)
     let tmp2 = tmp[1].split("|", 1)
-      .mapIt(it.splitLen(3, true).toSeq.mapIt(it.strip.parseInt))
+      .mapIt(it.splitLen(3).toSeq.mapIt(it.strip.parseInt))
     result.add(Card(
       id: tmp[0].split(" ", 1)[1].strip.parseInt,
       winning: tmp2[0],
@@ -31,11 +32,15 @@ proc parseInput(inp: string): seq[Card] =
     ))
 
 
-proc part1(cards: seq[Card]): int =
-  for c in cards:
-    let myWinningNumbers = c.winning.toHashSet.intersection(c.my.toHashSet)
-    if myWinningNumbers.len > 0:
-      result += 2.pow(myWinningNumbers.len-1)
+proc part2(cards: seq[Card]): int =
+  let winnings = cards.mapIt(it.winning.toHashSet.intersection(it.my.toHashSet).len)
+  var copies = cards.mapIt((number: it.id, count: 1, winnings: winnings[it.id-1]))
+  for i in 0..<copies.len:
+    let copied = copies[i]
+    for j in 0..<copied.winnings:
+      if i+1+j >= copies.len: break
+      inc copies[i+1+j].count, copied.count
+  return copies.sumIt(it.count)
 
 
 proc test() =
@@ -48,14 +53,14 @@ proc test() =
   assert cards[3].my == @[59, 84, 76, 51, 58, 5, 54, 83]
   assert cards[5].winning == @[31, 18, 13, 56, 72]
   assert cards[5].my == @[74, 77, 10, 23, 35, 67, 36, 11]
-  assert part1(cards) == 13
+  assert part2(cards) == 30
 
 
 proc main() =
   let cards = parseInput(readFile("input.txt"))
-  echo part1(cards)
+  echo part2(cards)
 
 
 if isMainModule:
   test()
-  # main()
+  main()
