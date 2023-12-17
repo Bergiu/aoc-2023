@@ -1,5 +1,5 @@
 import sequtils
-import ../lib/common_string
+import ../../lib/common_string
 
 
 proc testSplitInv() =

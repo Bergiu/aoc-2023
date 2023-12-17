@@ -1,4 +1,4 @@
-import ../lib/common_math
+import ../../lib/common_math
 
 
 proc testAddMod() =

@@ -1,6 +1,6 @@
 SRC_DIR := $(wildcard day*/part*.nim)
 EXE_FILES := $(patsubst %.nim,%,$(SRC_DIR))
-TEST_FILES := $(wildcard */test_*.nim)
+TEST_FILES := $(shell find test -type f -name 'test_*.nim')
 TEST_RESULTS := $(patsubst %.nim,%,$(TEST_FILES))
 
 .PHONY: all compile run test clean
@@ -28,7 +28,7 @@ run: compile
 
 test: compile
 	@echo "Running tests..."; \
-	testament pattern "*/test_*.nim"
+	testament pattern "test/*/test_*.nim"
 
 clean:
 	@echo "Cleaning up..."

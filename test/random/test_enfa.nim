@@ -1,4 +1,4 @@
-import ../lib/enfa
+import ../../lib/enfa
 import intsets
 import tables
 import options

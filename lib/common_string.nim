@@ -79,5 +79,3 @@ iterator splitLen*(s: string, length: int, ignoreRemaining=false): string =
   else:
     for s in splitLenInclusiveRemaining(s, length):
       yield s
-
-
