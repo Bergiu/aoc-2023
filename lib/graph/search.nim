@@ -2,7 +2,6 @@ import sets
 import deques
 import graph
 
-
 iterator bfs*[N](self: Graph[N], start: N): N =
   ## Breadth-first search / Breitensuche
   ## Returns an iterator over the nodes in the order they are visited.
@@ -24,7 +23,6 @@ iterator bfs*[N](self: Graph[N], start: N): N =
       queue.addLast(neighbor)
     yield node
 
-
 iterator bfsWithDepth*[N](self: Graph[N], start: N): tuple[node: N, depth: int] =
   ## Breadth-first search / Breitensuche
   ## Returns an iterator over the nodes in the order they are visited and their depth.
@@ -44,7 +42,6 @@ iterator bfsWithDepth*[N](self: Graph[N], start: N): tuple[node: N, depth: int] 
     for neighbor in self.outNeighbors(node) - visited:
       queue.addLast((neighbor, depth + 1))
     yield (node, depth)
-
 
 proc shortestPath*[N](self: Graph[N], start: N, target: N): seq[N] =
   ## Find the shortest path between two nodes.
@@ -69,3 +66,20 @@ proc shortestPath*[N](self: Graph[N], start: N, target: N): seq[N] =
     for neighbor in self.outNeighbors(node) - visited:
       queue.addLast((neighbor, path & @[node]))
   return @[]
+
+proc shortestPathEdges*[N](self: Graph[N], start: N, target: N): seq[tuple[fr: N, to: N]] =
+  ## Find the shortest path between two nodes.
+  ## If no path exists, an empty sequence is returned.
+  runnableExamples:
+    var graph = initGraph[int]()
+    graph.addEdge(1, 2)
+    graph.addEdge(2, 3)
+    graph.addEdge(1, 4)
+    assert graph.shortestPathEdges(1, 3) == @[(1, 2), (2, 3)]
+    assert graph.shortestPathEdges(3, 1) == @[]
+  let path = self.shortestPath(start, target)
+  if path.len == 0:
+    return @[]
+  for i in 0 ..< path.len - 1:
+    result.add((path[i], path[i + 1]))
+  return result

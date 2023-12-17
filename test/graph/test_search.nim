@@ -18,7 +18,6 @@ proc testBFS() =
   g.addEdge("b", "a")
   g.addEdge("e", "a")
   let l = g.bfs("a").toSeq
-  echo l
   assert l.len == 4
   assert l[0] == "a"
   assert l[1] in ["d", "c"]
@@ -76,7 +75,33 @@ proc testShortestPath() =
   assert m[0] == "a"
 
 
+proc testShortestPathEdges() =
+  var g = Graph[string]()
+  # e -> a <- b
+  #      | \  ^
+  #      v  \ |
+  #      d <- c
+  g.addEdge("a", "d")
+  g.addBidirectionalEdge("a", "c")
+  g.addEdge("c", "d")
+  g.addEdge("c", "b")
+  g.addEdge("b", "a")
+  g.addEdge("e", "a")
+  let l = g.shortestPathEdges("a", "b")
+  assert l.len == 2
+  assert l[0] == ("a", "c")
+  assert l[1] == ("c", "b")
+  let o = g.shortestPathEdges("b", "a")
+  assert o.len == 1
+  assert o[0] == ("b", "a")
+  let k = g.shortestPathEdges("a", "e")
+  assert k.len == 0
+  let m = g.shortestPathEdges("a", "a")
+  assert m.len == 0
+
+
 if isMainModule:
   testBFS()
   testBFSWithDepth()
   testShortestPath()
+  testShortestPathEdges()
