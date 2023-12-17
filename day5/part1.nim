@@ -8,12 +8,10 @@ import tables
 import algorithm
 
 import ../lib/common_string
-import ../lib/common_set
 import ../lib/common_seq
 import ../lib/graph/attributed_graph
 import ../lib/graph/graph
 import ../lib/graph/search
-
 
 const exampleInput = """seeds: 79 14 55 13
 
@@ -50,26 +48,21 @@ humidity-to-location map:
 56 93 4
 """
 
-
 type State = enum
   EmptyLine
   SeedList
   Map
-
 
 type Range = object
   sourceStart: int
   destinationStart: int
   length: int
 
-
 func increase(self: Range): int =
   self.destinationStart - self.sourceStart 
 
-
 func `==`(self: Range, index: int): bool =
   index in self.sourceStart ..< self.sourceStart + self.length
-
 
 func reverse(self: Range): Range =
   return Range(
@@ -77,12 +70,10 @@ func reverse(self: Range): Range =
     destinationStart: self.sourceStart,
     length: self.length)
 
-
 type Mapping = object
   source: string
   destination: string
   ranges: seq[Range]
-
 
 func reverse(self: Mapping): Mapping =
   Mapping(
@@ -90,16 +81,11 @@ func reverse(self: Mapping): Mapping =
     destination: self.source,
     ranges: self.ranges.mapIt(it.reverse))
 
-
 proc `[]`(self: Mapping, index: int): int =
   var i = self.ranges.find(index)
   if i == -1:
     return index
   return self.ranges[i].increase + index
-
-
-template findIt*[T](a: openarray[T], b: untyped): auto =
-  a.mapIt(b).find(true)
 
 func graph(self: seq[Mapping]): AttributedGraph[string, Mapping] =
   var g = AttributedGraph[string, Mapping]()
@@ -131,7 +117,6 @@ proc parseRange(line: string): Range =
     destinationStart: parts[0],
     sourceStart: parts[1],
     length: parts[2])
-
 
 proc parse(input: string): tuple[seeds: IntSet, mappings: seq[Mapping]] =
   let l = input.splitLines(keepTnl=true)
